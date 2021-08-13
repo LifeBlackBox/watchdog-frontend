@@ -1,86 +1,52 @@
-/* ============
- * Main File
- * ============
- *
- * Will initialize the application.
+// The Vue build version to load with the `import` command
+// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import Vue from 'vue'
+import App from './App'
+import router from './router'
+import store from './store'
+import iView from 'iview'
+import i18n from '@/locale'
+import config from '@/config'
+import importDirective from '@/directive'
+import { directive as clickOutside } from 'v-click-outside-x'
+import installPlugin from '@/plugin'
+import './index.less'
+import '@/assets/icons/iconfont.css'
+import TreeTable from 'tree-table-vue'
+import VOrgTree from 'v-org-tree'
+import 'v-org-tree/dist/v-org-tree.css'
+// 实际打包时应该不引入mock
+/* eslint-disable */
+if (process.env.NODE_ENV !== 'production') require('@/mock')
+
+Vue.use(iView, {
+  i18n: (key, value) => i18n.t(key, value)
+})
+Vue.use(TreeTable)
+Vue.use(VOrgTree)
+/**
+ * @description 注册admin内置插件
  */
-
-import Vue from 'vue';
-
-/* ============
- * Plugins
- * ============
- *
- * Import and bootstrap the plugins.
+installPlugin(Vue)
+/**
+ * @description 生产环境关掉提示
  */
-
-import './plugins/vuex';
-import './plugins/axios';
-import { i18n } from './plugins/vue-i18n';
-import { router } from './plugins/vue-router';
-import './plugins/vuex-router-sync';
-import './plugins/bootstrap';
-import './plugins/font-awesome';
-import './plugins/register-service-worker';
-
-/* ============
- * Styling
- * ============
- *
- * Import the application styling.
- * Stylus is used for this boilerplate.
- *
- * If you don't want to use Stylus, that's fine!
- * Replace the stylus directory with the CSS preprocessor you want.
- * Import the entry point here & install the webpack loader.
- *
- * It's that easy...
- *
- * http://stylus-lang.com/
+Vue.config.productionTip = false
+/**
+ * @description 全局注册应用配置
  */
-
-import './assets/stylus/app.styl';
-
-/* ============
- * Main App
- * ============
- *
- * Last but not least, we import the main application.
+Vue.prototype.$config = config
+/**
+ * 注册指令
  */
-
-import App from './App.vue';
-import store from './store';
-
-Vue.config.productionTip = false;
-
-store.dispatch('auth/check');
+importDirective(Vue)
+Vue.directive('clickOutside', clickOutside)
 
 /* eslint-disable no-new */
 new Vue({
-  /**
-   * Bind the Vue instance to the HTML.
-   */
   el: '#app',
-
-  /**
-   * The localization plugin.
-   */
-  i18n,
-
-  /**
-   * The router.
-   */
   router,
-
-  /**
-   * The Vuex store.
-   */
+  i18n,
   store,
-
-  /**
-   * Will render the application.
-   *
-   * @param {Function} h Will create an element.
-   */
-  render: (h) => h(App),
-});
+  render: h => h(App)
+})

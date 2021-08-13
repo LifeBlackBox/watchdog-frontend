@@ -1,31 +1,27 @@
 <template>
   <div id="app">
-    <router-view />
+    <router-view/>
   </div>
 </template>
+
 <script>
-/* ============
- * Entry Point
- * ============
- *
- * The entry point of the application.
- */
-
 export default {
-  /**
-   * The name of the application.
-   */
-  name: 'VueBoilerplate',
-
-  /**
-   * Fires when the app has been mounted.
-   */
-  mounted() {
-    // If the user is authenticated,
-    // fetch the data from the API
-    if (this.$store.state.auth.authenticated) {
-      this.$store.dispatch('account/find');
-    }
-  },
-};
+  name: 'App'
+}
 </script>
+
+<style lang="less">
+.size{
+  width: 100%;
+  height: 100%;
+}
+html,body{
+  .size;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+#app {
+  .size;
+}
+</style>
