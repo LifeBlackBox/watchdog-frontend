@@ -1,0 +1,28 @@
+version: "3.7"
+services:
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - watchdog_net
+
+  web:
+    container_name: watchdog-frontend
+    image: "watchdog-frontend:dev"
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      cache_from:
+        - "watchdog-frontend:dev"
+    command: npm run dev
+    restart: always
+    networks:
+      - watchdog_net
+
+networks:
+  watchdog_net:
